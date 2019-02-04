@@ -39,7 +39,7 @@ function newGame() {
         if (pickedWord[i] === ' ') {
             pickedWordPlacholderArr.push(' ');
         } else {
-            pickedWordPlacholderArr.push(" __ ");
+            pickedWordPlacholderArr.push("__ ");
         }
     }
 
@@ -53,11 +53,9 @@ function newGame() {
     $guessedLetters.textContent = incorrectLetterBank.push('$guessedLetters');
 }
 
-
-
 //letterGuess function, takes the letter you pressed and sees if it is
 //in the selected word, 
-
+// my letter guess never actually drops when I select the wrong letter. BUG FIX*****
 
 function letterGuess(letter) {
     console.log(letter);
@@ -70,18 +68,14 @@ function letterGuess(letter) {
         //check if guessed letter is in mypicked word
         for (var i = 0; i < pickedWord.length; i++) {
             //convert values to lowercase so they are exactly right
-
             if (pickedWord[i].toLowerCase() === letter.toLowerCase()) {
                 //if a match, swap out that character/value with  in the placeholder with the actual letter. 
                 pickedWordPlacholderArr[i] = pickedWord[i];
-
             }
-            // dont forget to uncomment the extra closing Curly Brack }
-            // else (pickedWord[i].toLowerCase() !== letter.toLowerCase()) {
-            //     pickedWordPlacholderArr
         }
-    
-    $placeholder.textContent = pickedWordPlacholderArr.push('');
+//I don't really get join. I stole it from some where. I do know push doesn't work. Tried that. 
+        $placeholder.textContent = pickedWordPlacholderArr.join('');
+        checkIncorrect(letter); 
     }
     //I DON"T UNDERSTAND WHY THERE IS AN ERROR HERE!!! RAGE QUIT. Next thing. 
     else {
@@ -89,24 +83,56 @@ function letterGuess(letter) {
         if (!gameRunning) {
             alert("The game isn't running. You need to click the [START NEW GAME] button. You can do it!");
         } else {
-            alert("Try again, silly willy. You've already picked that letter. Mitch. Fruit on the bottom hope on top.");
-
+            alert("Try again, silly willy. You've already picked that   letter. Mitch. Fruit on the bottom hope on top.");
         }
     }
 }
-//UN-comment this curly bracket. remember**
-// }
-
 
 // checkIncorrect(letter)
 function checkIncorrect(letter) {
-    
+    //checking to see if letter didn't make it onto pickedWordplacholder.
+    if (
+        pickedWordPlacholderArr.indexOf(letter.toLowerCase()) === -1
+        &&
+        pickedWordPlacholderArr.indexOf(letter.toUpperCase()) === -1 ) {
+        guessesLeft--; 
+       // Add incorrect letter to incorrectBank
+        incorrectLetterBank.push(letter);
+        $guessLetters.textContent = incorrectLetterBank.join(' ');
+        $guessesLeft.textContent = guessesLeft; 
+
+    }
 }
 
 
 //checkLose 
 
+function checkLoss() {
+    if (guessesLeft === 0) {
+        losses++;
+        gameRunning = false;
+        $losses.textContent = losses;
+        alert('loser')
+    }
+    }
+
 //checkWin 
+//after you complete the first word it doesn't ever prompt you to the next level. 
+//and when you type a letter that isn't listed it shows a number in the blanks until you select the first letter. 
+//fix these bugs.... after a nap***** DON"T FORGET
+
+function checkWin() {
+    if (pickedWord.toLowerCase() === pickedWordPlacholderArr.join('').toLowerCase() ){
+    
+    wins++;
+    gameRunning = false;
+    $wins.textContent = wins;
+    alert('winner winner! We are the champions my friends!')
+}
+checkWin();
+}
+
+
 
 //addEvent listener for new game button
 $newGameButton.addEventListener('click', newGame);
