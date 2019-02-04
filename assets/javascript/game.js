@@ -44,9 +44,13 @@ function newGame() {
     }
 
     //write all new game info for the DOM (document object model)
+    //how do I convert the numbers into letters? I tried this. thing. 
+    //I looked at several articles at like 6. .. My brain no worky good. 
+
+
     $guessesLeft.textContent = guessesLeft;
-    $placeholder.textContent = PickedWordPlacholderArr.push('');
-    $guessedLetters.textConent = incorrectLetterBank;
+    $placeholder.textContent = pickedWordPlacholderArr.push('');
+    $guessedLetters.textContent = incorrectLetterBank.push('$guessedLetters');
 }
 
 
