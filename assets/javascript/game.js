@@ -31,15 +31,17 @@ function newGame() {
     //picked a new word;
     pickedWord = wordBank[Math.floor(Math.random() * wordBank.length)];
     console.log(pickedWord);
-    console.log(guessesLeft);
+    // console.log(guessesLeft);
 
 
     //newGame function to reset all stats, pick new word, and create placholders
     for (var i = 0; i < pickedWord.length; i++) {
         if (pickedWord[i] === ' ') {
             pickedWordPlacholderArr.push(' ');
+            console.log("hi there");
         } else {
             pickedWordPlacholderArr.push("__ ");
+            console.log("from me too");
         }
     }
 
@@ -49,8 +51,8 @@ function newGame() {
 
 
     $guessesLeft.textContent = guessesLeft;
-    $placeholder.textContent = pickedWordPlacholderArr.push('');
-    $guessedLetters.textContent = incorrectLetterBank.push('$guessedLetters');
+    $placeholder.textContent = pickedWordPlacholderArr.join('');
+    $guessedLetters.textContent = incorrectLetterBank.join(', ');
 }
 
 //letterGuess function, takes the letter you pressed and sees if it is
@@ -58,12 +60,14 @@ function newGame() {
 // my letter guess never actually drops when I select the wrong letter. BUG FIX*****
 
 function letterGuess(letter) {
-    console.log(letter);
+    // console.log(letter);
 
     // prevent picking same letter, normal gamer protection in a REAL game
     if (gameRunning === true && guessedLetterBank.indexOf(letter) === -1) {
         //run game logic
         guessedLetterBank.push(letter);
+
+        console.log(guessedLetterBank)
 
         //check if guessed letter is in mypicked word
         for (var i = 0; i < pickedWord.length; i++) {
@@ -73,7 +77,7 @@ function letterGuess(letter) {
                 pickedWordPlacholderArr[i] = pickedWord[i];
             }
         }
-//I don't really get join. I stole it from some where. I do know push doesn't work. Tried that. 
+        //I don't really get join. I stole it from some where. I do know push doesn't work. Tried that. 
         $placeholder.textContent = pickedWordPlacholderArr.join('');
         checkIncorrect(letter); 
     }
@@ -90,16 +94,16 @@ function letterGuess(letter) {
 
 // checkIncorrect(letter)
 function checkIncorrect(letter) {
+    // console.log(letter);
     //checking to see if letter didn't make it onto pickedWordplacholder.
     if (
-        pickedWordPlacholderArr.indexOf(letter.toLowerCase()) === -1
-        &&
-        pickedWordPlacholderArr.indexOf(letter.toUpperCase()) === -1 ) {
-        guessesLeft--; 
-       // Add incorrect letter to incorrectBank
+        pickedWordPlacholderArr.indexOf(letter.toLowerCase()) === -1 &&
+        pickedWordPlacholderArr.indexOf(letter.toUpperCase()) === -1) {
+        guessesLeft--;
+        // Add incorrect letter to incorrectBank
         incorrectLetterBank.push(letter);
-        $guessLetters.textContent = incorrectLetterBank.join(' ');
-        $guessesLeft.textContent = guessesLeft; 
+        $guessedLetters.textContent = incorrectLetterBank.join(', ');
+        $guessesLeft.textContent = guessesLeft;
 
     }
 }
@@ -114,7 +118,7 @@ function checkLoss() {
         $losses.textContent = losses;
         alert('loser')
     }
-    }
+}
 
 //checkWin 
 //after you complete the first word it doesn't ever prompt you to the next level. 
@@ -122,14 +126,14 @@ function checkLoss() {
 //fix these bugs.... after a nap***** DON"T FORGET
 
 function checkWin() {
-    if (pickedWord.toLowerCase() === pickedWordPlacholderArr.join('').toLowerCase() ){
-    
-    wins++;
-    gameRunning = false;
-    $wins.textContent = wins;
-    alert('winner winner! We are the champions my friends!')
-}
-checkWin();
+    if (pickedWord.toLowerCase() === pickedWordPlacholderArr.join('').toLowerCase()) {
+
+        wins++;
+        gameRunning = false;
+        $wins.textContent = wins;
+        alert('winner winner! We are the champions my friends!')
+    }
+    checkWin();
 }
 
 
@@ -140,11 +144,10 @@ $newGameButton.addEventListener('click', newGame);
 //add onkeyup event to trigger letterGuess
 
 document.onkeyup = function (event) {
-    console.dir(event);
+    console.log(event);
     //65 means 'A' and 90 means 'Z'
     if (event.keyCode >= 65 && event.keyCode <= 90) {
         //event.keyCode is the actual letter. 
         letterGuess(event.key);
     }
 }
-
